@@ -16,7 +16,7 @@ module AttributeMapper
   module ClassMethods
     def map_attribute(attribute, options)
         mapping = options[:to]
-        #verify_existence_of attribute
+        verify_existence_of attribute
         add_accessor_for    attribute, mapping
         override            attribute
     end

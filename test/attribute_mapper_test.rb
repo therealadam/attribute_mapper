@@ -3,8 +3,7 @@ require 'rubygems'
 require 'test/spec'
 require 'active_support'
 require 'active_record'
-
-Dependencies.load_paths << (File.dirname(__FILE__) << "/../lib")
+require 'attribute_mapper'
 
 AttributeMapper.load
 
