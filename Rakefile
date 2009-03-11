@@ -15,7 +15,7 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
-    s.name = 'AttributeMapper'
+    s.name = 'attribute_mapper'
     s.summary = 'Map symbolic types to primitive types and stash them in a column.'
     s.email = 'adamkkeys@gmail.com'
     s.homepage = 'http://github.com/therealadam/attribute_mapper'
