@@ -1,10 +1,15 @@
 require 'rake/testtask'
+require 'rcov/rcovtask'
 
 task :default => :test
 
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/*_test.rb']
   t.ruby_opts = ['-rubygems']
+end
+
+Rcov::RcovTask.new do |t|
+  t.test_files = FileList['test/*_test.rb']
 end
 
 begin
