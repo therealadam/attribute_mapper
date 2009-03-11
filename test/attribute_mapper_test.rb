@@ -27,7 +27,7 @@ class AttributeMapperTest < Test::Unit::TestCase
     setup do
       Ticket.map_attribute :status, :to => mapping
     end
-  
+    
     should "set mapping for each attribute" do
       assert_equal mapping[:open], Ticket.statuses[:open]
       assert_equal mapping[:closed], Ticket.statuses[:closed]
