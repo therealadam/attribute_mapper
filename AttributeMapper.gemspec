@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marcel Molina Jr.", "Bruce Williams", "Adam Keys"]
   s.date = %q{2009-03-10}
-  s.description = %q{AttributeMapper provides a transparent interface for mapping symbolic representations to a column in the database of a more primitive type.}
+  s.description = %q{Provides a transparent interface for mapping symbolic representations to a column in the database of a more primitive type.}
   s.email = %q{adamkkeys@gmail.com}
   s.files = ["AttributeMapper.gemspec", "VERSION.yml", "lib/attribute_mapper.rb", "test/attribute_mapper_test.rb"]
   s.has_rdoc = true
