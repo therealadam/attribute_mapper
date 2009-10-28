@@ -7,6 +7,8 @@ Ticket model's status column is "open" or "closed" you would create the
 following mapping:
 
     class Ticket < ActiveRecord::Base
+      include AttributeMapper
+      
       map_attribute :status, :to => {:open => 1, :closed => 2}
     end
   
