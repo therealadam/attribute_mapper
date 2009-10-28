@@ -1,10 +1,8 @@
 require 'test/unit'
 require 'shoulda'
+
 require 'active_record'
-
 require 'attribute_mapper'
-
-AttributeMapper.load
 
 ActiveRecord::Base.establish_connection(
   :adapter  => 'sqlite3',
@@ -19,6 +17,7 @@ end
 
 # Pseudo model for testing purposes
 class Ticket < ActiveRecord::Base
+  include AttributeMapper
 end
 
 class AttributeMapperTest < Test::Unit::TestCase
@@ -90,11 +89,11 @@ class AttributeMapperTest < Test::Unit::TestCase
   #######
   private
   #######
-
+  
   def mapping(options = {})
     {:open => 1, :closed => 2}.merge(options)
   end
-
+  
   def ticket
     @ticket ||= Ticket.new
   end

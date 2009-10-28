@@ -1,16 +1,8 @@
 module AttributeMapper
   
-  class << self
-  
-    def included(model)
-      model.extend ClassMethods
-      model.send(:include, InstanceMethods)
-    end
-    
-    def load
-      ActiveRecord::Base.send(:include, AttributeMapper)
-    end
-    
+  def self.included(model)
+    model.extend ClassMethods
+    model.send(:include, InstanceMethods)
   end
   
   module ClassMethods
