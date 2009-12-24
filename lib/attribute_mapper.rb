@@ -6,6 +6,11 @@ module AttributeMapper
   end
   
   module ClassMethods
+    
+    # Map a column in your table to a human-friendly attribute on your model.
+    #
+    # Keys:
+    #   +:to+ :: Specifies the enumeration to use for this attribute. The enumeration should be provided as a hash of name to value mappings.
     def map_attribute(attribute, options)
         mapping = options[:to]
         verify_existence_of attribute
