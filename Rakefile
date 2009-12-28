@@ -13,6 +13,16 @@ Rcov::RcovTask.new do |t|
 end
 
 begin
+  require 'yard'
+  YARD::Rake::YardocTask.new(:doc) do |t|
+    t.options = ['--no-private']
+    t.files = FileList['lib/**/*.rb']
+  end
+rescue LoadError => e
+  puts "yard not available. Install it with: gem install yard"
+end
+
+begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = 'attribute_mapper'
