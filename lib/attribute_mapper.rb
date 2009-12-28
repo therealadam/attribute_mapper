@@ -5,12 +5,16 @@ module AttributeMapper
     model.send(:include, InstanceMethods)
   end
   
-  module ClassMethods
+  module ClassMethods # @private
     
     # Map a column in your table to a human-friendly attribute on your model.
     #
-    # Keys:
-    #   +:to+ :: Specifies the enumeration to use for this attribute. The enumeration should be provided as a hash of name to value mappings.
+    # @example Define a Ticket model with a status column that maps to open or closed
+    #   map_attribute :status, :to => {:open => 1, :closed => 2}
+    #
+    # @param [String] attribute the column to map on
+    # @param [Hash] options the options for this attribute
+    # @option options [Hash] :to The enumeration to use for this attribute. See example above.
     def map_attribute(attribute, options)
         mapping = options[:to]
         verify_existence_of attribute
