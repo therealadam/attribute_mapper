@@ -7,7 +7,19 @@ module AttributeMapper
   
   module ClassMethods # @private
     
-    # Map a column in your table to a human-friendly attribute on your model.
+    # Map a column in your table to a human-friendly attribute on your model. When
+    # ++attribute is accessed, it will return the key from the mapping hash. When
+    # the attribute is updated, the value from the mapping hash is written to the
+    # database.
+    #
+    # A class method is also added providing access to the mapping
+    # hash, i.e. defining an attribute ++status++ will add a
+    # ++statuses++ class method that returns the hash passed to the
+    # ++:to++ option.
+    #
+    # Predicates are also added to each object for each attribute. If you have a key
+    # ++open++ in your mapping, your objects will have an ++open?++ method that
+    # returns true if the attribute value is ++:open++
     #
     # @example Define a Ticket model with a status column that maps to open or closed
     #   map_attribute :status, :to => {:open => 1, :closed => 2}
