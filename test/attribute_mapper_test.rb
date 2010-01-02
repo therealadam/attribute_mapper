@@ -27,6 +27,11 @@ class AttributeMapperTest < Test::Unit::TestCase
       assert_equal :closed, ticket.status
       assert_equal mapping[:closed], ticket[:status]
     end
+
+    should 'define predicates for each attribute' do
+      ticket.status = :open
+      assert ticket.open?
+    end
   
     should "allow indifferent access to setters" do
       assert_nothing_raised do

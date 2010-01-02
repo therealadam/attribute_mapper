@@ -16,12 +16,13 @@ module AttributeMapper
     # @param [Hash] options the options for this attribute
     # @option options [Hash] :to The enumeration to use for this attribute. See example above.
     def map_attribute(attribute, options)
-        mapping = options[:to]
-        verify_existence_of attribute
-        add_accessor_for    attribute, mapping
-        override            attribute
+      mapping = options[:to]
+      verify_existence_of attribute
+      add_accessor_for    attribute, mapping
+      add_predicates_for  attribute, mapping.keys
+      override            attribute
     end
-    
+
     private
       def add_accessor_for(attribute, mapping)
         class_eval(<<-EVAL)
@@ -31,7 +32,17 @@ module AttributeMapper
             end
           end
         EVAL
-      end
+        end
+
+        def add_predicates_for(attribute, names)
+          names.each do |name|
+            class_eval(<<-RUBY)
+              def #{name}?
+                self.#{attribute} == :#{name}
+              end
+            RUBY
+          end
+        end
     
       def override(*args)
         override_getters *args
