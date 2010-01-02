@@ -5,7 +5,7 @@ task :default => :test
 
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/*_test.rb']
-  t.ruby_opts = ['-rubygems']
+  t.ruby_opts = ['-Itest', '-rubygems']
 end
 
 Rcov::RcovTask.new do |t|
