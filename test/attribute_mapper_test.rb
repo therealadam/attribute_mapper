@@ -68,7 +68,34 @@ class AttributeMapperTest < Test::Unit::TestCase
         ticket.status = 500
       end
     end
+
+    should "work with mass assignment" do
+      ticket.update_attributes(:status => :open, :name => 'Red is too red')
+    end
+
+    should "work with attr_accessible" do
+      new_ticket = Class.new(ActiveRecord::Base) do
+        set_table_name "tickets"
         
+        include AttributeMapper
+        map_attribute :status, :to => {:open => 1, :closed => 2}
+        
+        attr_accessible :status
+      end
+
+      t = new_ticket.new
+      t.status = :open
+
+      assert_equal :open, t.status
+    end
+
+    should "provide a helper for forms" do
+      assert_equal [[["Closed", :closed], ["Open", :open]]], ticket.status_options
+      assert_equal [[["Open", :open], ["Closed", :closed]]], ticket.status_options(false)
+      ticket.status = :open
+      assert_equal [[["Open", :open], ["Closed", :closed]], {:selected => :open}], ticket.status_options(false)
+    end
+    
   end
   
   #######

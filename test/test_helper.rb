@@ -12,6 +12,7 @@ ActiveRecord::Base.establish_connection(
 ActiveRecord::Schema.define do 
   create_table :tickets do |table|
     table.column :status, :integer
+    table.column :name, :string
   end
 end
 

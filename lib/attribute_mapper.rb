@@ -33,6 +33,7 @@ module AttributeMapper
       add_accessor_for    attribute, mapping
       add_predicates_for  attribute, mapping.keys
       override            attribute
+      add_options_helper_for attribute, mapping
     end
 
     private
@@ -46,16 +47,29 @@ module AttributeMapper
         EVAL
         end
 
-        def add_predicates_for(attribute, names)
-          names.each do |name|
-            class_eval(<<-RUBY)
-              def #{name}?
-                self.#{attribute} == :#{name}
-              end
-            RUBY
-          end
+      def add_predicates_for(attribute, names)
+        names.each do |name|
+          class_eval(<<-RUBY)
+            def #{name}?
+              self.#{attribute} == :#{name}
+            end
+          RUBY
         end
-    
+      end
+
+        def add_options_helper_for(attribute, mapping)
+          class_eval(<<-EVAL, __FILE__, __LINE__)
+            def #{attribute}_options(sort_by_keys=true)
+              options = self.class.#{attribute.to_s.pluralize}.sort { |l, r|
+                sort_by_keys ? l.first.to_s <=> r.first.to_s : l.last <=> r.last
+              }.map { |f|
+                [f[0].to_s.humanize, f[0]]
+              }
+            self.#{attribute}.present? ? [options, {:selected => self.#{attribute}}] : [options]
+            end
+          EVAL
+        end
+        
       def override(*args)
         override_getters *args
         override_setters *args
