@@ -1,0 +1,6 @@
+recipe :ruby
+
+startup { log "Here we go." }
+
+Ruby.test_options << "-Itest"
+Ruby.test_options << "-rubygems"
