@@ -7,26 +7,38 @@ module AttributeMapper
   
   module ClassMethods # @private
     
-    # Map a column in your table to a human-friendly attribute on your model. When
-    # ++attribute is accessed, it will return the key from the mapping hash. When
-    # the attribute is updated, the value from the mapping hash is written to the
-    # database.
+    # Map a column in your table to a human-friendly attribute on your
+    # model. When +attribute+ is accessed, it will return the key
+    # from the mapping hash. When the attribute is updated, the value
+    # from the mapping hash is written to the database.
     #
     # A class method is also added providing access to the mapping
-    # hash, i.e. defining an attribute ++status++ will add a
-    # ++statuses++ class method that returns the hash passed to the
-    # ++:to++ option.
+    # hash, i.e. defining an attribute +status+ will add a
+    # +statuses+ class method that returns the hash passed to the
+    # +:to+ option.
     #
-    # Predicates are also added to each object for each attribute. If you have a key
-    # ++open++ in your mapping, your objects will have an ++open?++ method that
-    # returns true if the attribute value is ++:open++
+    # Predicates are also added to each object for each attribute. If
+    # you have a key +open+ in your mapping, your objects will have
+    # an +open?+ method that returns true if the attribute value is
+    # +:open+
     #
-    # @example Define a Ticket model with a status column that maps to open or closed
+    # Each attribute you map generates an options method, suitable for
+    # use in form helpers. If you define an attribute +status+,
+    # instances of your model will have a +status_options+ method
+    # that returns a sorted array of arrays containing
+    # humanized-option-name/value pairs. By default this array is
+    # sorted by the option name (closed/open/etc.) If you'd rather
+    # sort by value, pass +false+ to the options method. This method
+    # also will set the selected option for records where the
+    # attribute is already set.
+    #
+    # @example Define a Ticket model with a status column:
     #   map_attribute :status, :to => {:open => 1, :closed => 2}
     #
     # @param [String] attribute the column to map on
     # @param [Hash] options the options for this attribute
-    # @option options [Hash] :to The enumeration to use for this attribute. See example above.
+    # @option options [Hash] :to The enumeration to use for this
+    #   attribute. See example above.
     def map_attribute(attribute, options)
       mapping = options[:to]
       verify_existence_of attribute
