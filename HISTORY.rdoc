@@ -1,0 +1,8 @@
+= 1.2.0 (2010-02-23)
+
+* Verified compatibility with +update_attributes+ and +attr_accessible+.
+* Add +_options+ helper to make generating select forms for mappings easier
+
+= 1.1.1 (2010-01-08)
+
+* Changelog epoch.
