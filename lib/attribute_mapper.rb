@@ -114,12 +114,15 @@ module AttributeMapper
   module InstanceMethods
     
     private
-      def resolve_value_of(attribute, raw_value)
-        check_value = raw_value.is_a?(String) ? raw_value.to_sym : raw_value
-        mapping = self.class.send(attribute.to_s.pluralize)
-        raise ArgumentError, "`#{check_value}' not present in attribute mapping `#{mapping.inspect}'" unless mapping.to_a.flatten.include? check_value
-        mapping.include?(check_value) ? mapping[check_value] : check_value
-      end
+
+    def resolve_value_of(attribute, raw_value)
+      return raw_value if raw_value.blank?
+      check_value = raw_value.is_a?(String) ? raw_value.to_sym : raw_value
+      mapping = self.class.send(attribute.to_s.pluralize)
+      raise ArgumentError, "`#{check_value}' not present in attribute mapping `#{mapping.inspect}'" unless mapping.to_a.flatten.include? check_value
+      mapping.include?(check_value) ? mapping[check_value] : check_value
+    end
+
   end
   
 end

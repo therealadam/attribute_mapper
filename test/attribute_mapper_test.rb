@@ -109,6 +109,7 @@ class AttributeMapperTest < Test::Unit::TestCase
         assert ticket.unanswered?
       end
 
+      
       should "allow setting the status by symbol" do
         assert_nothing_raised do
           ticket.status = :unanswered
@@ -116,6 +117,19 @@ class AttributeMapperTest < Test::Unit::TestCase
         assert_equal :unanswered, ticket.status
         assert ticket.unanswered?
       end
+
+    end
+
+    should "not raise an error when setting to a blank value" do
+      assert_nothing_raised {
+        ticket.update_attributes(:status => "")
+      }
+    end
+
+    should "not raise an error when setting to a nil value" do
+      assert_nothing_raised {
+        ticket.update_attributes(:status => nil)
+      }
     end
     
   end
