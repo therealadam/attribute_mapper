@@ -51,7 +51,7 @@ module AttributeMapper
     private
     
     def add_accessor_for(attribute, mapping)
-      class_eval(<<-EVAL)
+      class_eval(<<-EVAL, __FILE__, __LINE__)
         class << self
           def #{attribute.to_s.pluralize}
             #{mapping.inspect}
@@ -62,7 +62,7 @@ module AttributeMapper
 
     def add_predicates_for(attribute, names)
       names.each do |name|
-        class_eval(<<-RUBY)
+        class_eval(<<-RUBY, __FILE__, __LINE__)
           def #{name}?
             self.#{attribute} == :#{name}
           end
@@ -89,7 +89,7 @@ module AttributeMapper
     end
     
     def override_getters(attribute)
-      class_eval(<<-EVAL)
+      class_eval(<<-EVAL, __FILE__, __LINE__)
         def #{attribute}
           self.class.#{attribute.to_s.pluralize}.invert[read_attribute(:#{attribute})]
         end
@@ -97,7 +97,7 @@ module AttributeMapper
     end
     
     def override_setters(attribute)
-      class_eval(<<-EVAL)
+      class_eval(<<-EVAL, __FILE__, __LINE__)
         def #{attribute}=(raw_value)
           value = resolve_value_of :#{attribute}, raw_value
           write_attribute(:#{attribute}, value)
