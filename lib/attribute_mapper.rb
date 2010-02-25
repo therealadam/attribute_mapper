@@ -43,7 +43,7 @@ module AttributeMapper
       mapping = options[:to]
       verify_existence_of attribute
       add_accessor_for    attribute, mapping
-      add_predicates_for  attribute, mapping.keys
+      add_predicates_for  attribute, mapping.keys if options.fetch(:predicate_methods) { true }
       override            attribute
       add_options_helper_for attribute, mapping
     end
