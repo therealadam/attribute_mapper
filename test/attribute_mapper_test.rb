@@ -96,6 +96,18 @@ class AttributeMapperTest < Test::Unit::TestCase
       assert_equal [[["Open", :open], ["Closed", :closed]], {:selected => :open}], ticket.status_options(false)
     end
 
+    should "not raise an error when setting to a blank value" do
+      assert_nothing_raised {
+        ticket.update_attributes(:status => "")
+      }
+    end
+
+    should "not raise an error when setting to a nil value" do
+      assert_nothing_raised {
+        ticket.update_attributes(:status => nil)
+      }
+    end
+
   end
 
   #######
