@@ -131,6 +131,22 @@ class AttributeMapperTest < Test::Unit::TestCase
         ticket.update_attributes(:status => nil)
       }
     end
+
+    should "turn off generation of predicate methods" do
+      new_ticket = Class.new(ActiveRecord::Base) do
+        set_table_name "tickets"
+
+        include AttributeMapper
+        map_attribute :status, :to => {:open => 1, :closed => 2}, :predicate_methods => false
+      end
+
+      t = new_ticket.new
+      t.status = :open
+
+      assert_raises(NoMethodError) {
+        t.open?
+      }
+    end
     
   end
   
