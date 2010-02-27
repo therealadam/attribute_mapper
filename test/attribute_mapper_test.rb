@@ -96,6 +96,28 @@ class AttributeMapperTest < Test::Unit::TestCase
       assert_equal [[["Open", :open], ["Closed", :closed]], {:selected => :open}], ticket.status_options(false)
     end
     
+    context "setting nil as a valid value in the mapping" do
+      setup do
+        Ticket.map_attribute :status, :to => mapping(:unanswered => nil)
+      end
+
+      should "allow setting the status by primitive value" do
+        assert_nothing_raised do
+          ticket.status = mapping[:unanswered]
+        end
+        assert_equal :unanswered, ticket.status
+        assert ticket.unanswered?
+      end
+
+      should "allow setting the status by symbol" do
+        assert_nothing_raised do
+          ticket.status = :unanswered
+        end
+        assert_equal :unanswered, ticket.status
+        assert ticket.unanswered?
+      end
+    end
+    
   end
   
   #######
