@@ -40,7 +40,7 @@ module AttributeMapper
     # @option options [Hash] :to The enumeration to use for this
     #   attribute. See example above.
     def map_attribute(attribute, options)
-      mapping = options[:to]
+      mapping = build_mapping(options)
       verify_existence_of attribute
       add_accessor_for    attribute, mapping
       add_predicates_for  attribute, mapping.keys if options.fetch(:predicate_methods) { true }
@@ -49,6 +49,21 @@ module AttributeMapper
     end
 
     private
+    def build_mapping(options)
+      case options[:to]
+      when Hash
+        options[:to]
+      when Array
+        build_mapping_from_array(options[:to])
+      end
+    end
+
+    # Transforms an array into a hash for the mapping.
+    #   [:open, :closed] # => { :open => 1, :closed => 2 }
+    #
+    def build_mapping_from_array(array)
+      array.enum_for(:each_with_index).inject({}) { |h, (o, i)| h[o] = i+1; h }
+    end
 
     def add_accessor_for(attribute, mapping)
       class_eval(<<-EVAL, __FILE__, __LINE__)

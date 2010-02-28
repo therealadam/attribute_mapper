@@ -124,6 +124,31 @@ class AttributeMapperTest < Test::Unit::TestCase
       }
     end
 
+    should 'auto-expand arrays to a hash with the raw value being the index + 1' do
+      array_ticket = Class.new(ActiveRecord::Base) do
+        set_table_name "tickets"
+
+        include AttributeMapper
+        map_attribute :status, :to => [:open, :closed]
+      end
+
+      ticket = array_ticket.new
+
+      assert_nil ticket.status
+      assert_nothing_raised do
+        ticket.status = :open
+      end
+      assert_equal :open, ticket.status
+      assert_equal mapping[:open], ticket[:status]
+
+      assert_nothing_raised do
+        ticket.status = :closed
+      end
+
+      assert_equal :closed, ticket.status
+      assert_equal mapping[:closed], ticket[:status]
+
+    end
   end
 
   #######
