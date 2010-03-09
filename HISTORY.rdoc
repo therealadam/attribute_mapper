@@ -1,3 +1,11 @@
+= 1.3.0 (2010-03-09)
+
+The "Contributors-are-Awesome" release!
+
+* Allow assigning nil to a mapping (Ralph von der Heyden)
+* Optionally turn off predicates (Michael Guterl)
+* don't blow up when form data comes in and a mapped attribute is missing (Michael Guterl)
+
 = 1.2.0 (2010-02-23)
 
 * Verified compatibility with +update_attributes+ and +attr_accessible+.
