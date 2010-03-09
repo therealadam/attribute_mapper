@@ -39,6 +39,8 @@ module AttributeMapper
     # @param [Hash] options the options for this attribute
     # @option options [Hash] :to The enumeration to use for this
     #   attribute. See example above.
+    # @option options :predicate_methods Generate methods for checking
+    #   whether an object has a certain attribute set
     def map_attribute(attribute, options)
       mapping = options[:to]
       verify_existence_of attribute
