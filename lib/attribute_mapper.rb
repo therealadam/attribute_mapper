@@ -48,6 +48,7 @@ module AttributeMapper
       add_predicates_for  attribute, mapping.keys if options.fetch(:predicate_methods) { true }
       override            attribute
       add_options_helper_for attribute, mapping
+      add_options_helper_to_class attribute, self
     end
 
     private
@@ -95,7 +96,19 @@ module AttributeMapper
           }.map { |f|
             [f[0].to_s.humanize, f[0]]
           }
-        self.#{attribute}.present? ? [options, {:selected => self.#{attribute}}] : [options]
+          self.#{attribute}.present? ? [options, {:selected => self.#{attribute}}] : [options]
+        end
+      EVAL
+    end
+
+    def add_options_helper_to_class(attribute, klass)
+      klass.instance_eval(<<-EVAL, __FILE__, __LINE__)
+        def #{attribute}_options(sort_by_keys=true)
+          options = #{attribute.to_s.pluralize}.sort { |l, r|
+            sort_by_keys ? l.first.to_s <=> r.first.to_s : l.last <=> r.last
+          }.map { |f|
+            [f[0].to_s.humanize, f[0]]
+          }
         end
       EVAL
     end

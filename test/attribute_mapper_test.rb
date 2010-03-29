@@ -96,6 +96,11 @@ class AttributeMapperTest < Test::Unit::TestCase
       assert_equal [[["Open", :open], ["Closed", :closed]], {:selected => :open}], ticket.status_options(false)
     end
 
+    should "provide a class level helper for forms" do
+      assert_equal [["Closed", :closed], ["Open", :open]], Ticket.status_options
+      assert_equal [["Open", :open], ["Closed", :closed]], Ticket.status_options(false)
+    end
+
     should "not raise an error when setting to a blank value" do
       assert_nothing_raised {
         ticket.update_attributes(:status => "")
