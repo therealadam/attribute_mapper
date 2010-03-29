@@ -39,6 +39,8 @@ module AttributeMapper
     # @param [Hash] options the options for this attribute
     # @option options [Hash] :to The enumeration to use for this
     #   attribute. See example above.
+    # @option options :predicate_methods Generate methods for checking
+    #   whether an object has a certain attribute set
     def map_attribute(attribute, options)
       mapping = build_mapping(options)
       verify_existence_of attribute
@@ -135,7 +137,7 @@ module AttributeMapper
       check_value = raw_value.is_a?(String) ? raw_value.to_sym : raw_value
       mapping = self.class.send(attribute.to_s.pluralize)
       raise ArgumentError, "`#{check_value}' not present in attribute mapping `#{mapping.inspect}'" unless mapping.to_a.flatten.include? check_value
-      mapping[check_value] || check_value
+      mapping.include?(check_value) ? mapping[check_value] : check_value
     end
 
   end

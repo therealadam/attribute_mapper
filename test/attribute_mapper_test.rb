@@ -149,6 +149,7 @@ class AttributeMapperTest < Test::Unit::TestCase
       assert_equal mapping[:closed], ticket[:status]
 
     end
+
   end
 
   #######
