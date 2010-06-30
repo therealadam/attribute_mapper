@@ -94,7 +94,7 @@ module AttributeMapper
           options = self.class.#{attribute.to_s.pluralize}.sort { |l, r|
             sort_by_keys ? l.first.to_s <=> r.first.to_s : l.last <=> r.last
           }.map { |f|
-            [f[0].to_s.titlecase, f[0]]
+            [f[0].to_s, f[0]]
           }
           self.#{attribute}.present? ? [options, {:selected => self.#{attribute}}] : [options]
         end
@@ -107,7 +107,7 @@ module AttributeMapper
           options = #{attribute.to_s.pluralize}.sort { |l, r|
             sort_by_keys ? l.first.to_s <=> r.first.to_s : l.last <=> r.last
           }.map { |f|
-            [f[0].to_s.titlecase, f[0]]
+            [f[0].to_s, f[0]]
           }
         end
       EVAL
