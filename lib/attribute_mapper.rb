@@ -25,6 +25,7 @@ module AttributeMapper
     # Each attribute you map generates an options method, suitable for
     # use in form helpers. If you define an attribute +status+,
     # instances of your model will have a +status_options+ method
+    # (on the class and any instances)
     # that returns a sorted array of arrays containing
     # humanized-option-name/value pairs. By default this array is
     # sorted by the option name (closed/open/etc.) If you'd rather
@@ -42,15 +43,31 @@ module AttributeMapper
     # @option options :predicate_methods Generate methods for checking
     #   whether an object has a certain attribute set
     def map_attribute(attribute, options)
-      mapping = options[:to]
+      mapping = build_mapping(options)
       verify_existence_of attribute
       add_accessor_for    attribute, mapping
       add_predicates_for  attribute, mapping.keys if options.fetch(:predicate_methods) { true }
       override            attribute
       add_options_helper_for attribute, mapping
+      add_options_helper_to_class attribute, self
     end
 
     private
+    def build_mapping(options)
+      case options[:to]
+      when Hash
+        options[:to]
+      when Array
+        build_mapping_from_array(options[:to])
+      end
+    end
+
+    # Transforms an array into a hash for the mapping.
+    #   [:open, :closed] # => { :open => 1, :closed => 2 }
+    #
+    def build_mapping_from_array(array)
+      array.enum_for(:each_with_index).inject({}) { |h, (o, i)| h[o] = i+1; h }
+    end
 
     def add_accessor_for(attribute, mapping)
       class_eval(<<-EVAL, __FILE__, __LINE__)
@@ -78,9 +95,21 @@ module AttributeMapper
           options = self.class.#{attribute.to_s.pluralize}.sort { |l, r|
             sort_by_keys ? l.first.to_s <=> r.first.to_s : l.last <=> r.last
           }.map { |f|
-            [f[0].to_s.humanize, f[0]]
+            [f[0].to_s.capitalize, f[0]]
           }
-        self.#{attribute}.present? ? [options, {:selected => self.#{attribute}}] : [options]
+          self.#{attribute}.present? ? [options, {:selected => self.#{attribute}}] : [options]
+        end
+      EVAL
+    end
+
+    def add_options_helper_to_class(attribute, klass)
+      klass.instance_eval(<<-EVAL, __FILE__, __LINE__)
+        def #{attribute}_options(sort_by_keys=true)
+          options = #{attribute.to_s.pluralize}.sort { |l, r|
+            sort_by_keys ? l.first.to_s <=> r.first.to_s : l.last <=> r.last
+          }.map { |f|
+            [f[0].to_s.capitalize, f[0]]
+          }
         end
       EVAL
     end

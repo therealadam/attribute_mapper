@@ -96,6 +96,11 @@ class AttributeMapperTest < Test::Unit::TestCase
       assert_equal [[["Open", :open], ["Closed", :closed]], {:selected => :open}], ticket.status_options(false)
     end
 
+    should "provide a class level helper for forms" do
+      assert_equal [["Closed", :closed], ["Open", :open]], Ticket.status_options
+      assert_equal [["Open", :open], ["Closed", :closed]], Ticket.status_options(false)
+    end
+
     should "not raise an error when setting to a blank value" do
       assert_nothing_raised {
         ticket.update_attributes(:status => "")
@@ -146,6 +151,32 @@ class AttributeMapperTest < Test::Unit::TestCase
         assert_equal :unanswered, ticket.status
         assert ticket.unanswered?
       end
+
+    end
+
+    should 'auto-expand arrays to a hash with the raw value being the index + 1' do
+      array_ticket = Class.new(ActiveRecord::Base) do
+        set_table_name "tickets"
+
+        include AttributeMapper
+        map_attribute :status, :to => [:open, :closed]
+      end
+
+      ticket = array_ticket.new
+
+      assert_nil ticket.status
+      assert_nothing_raised do
+        ticket.status = :open
+      end
+      assert_equal :open, ticket.status
+      assert_equal mapping[:open], ticket[:status]
+
+      assert_nothing_raised do
+        ticket.status = :closed
+      end
+
+      assert_equal :closed, ticket.status
+      assert_equal mapping[:closed], ticket[:status]
 
     end
 
