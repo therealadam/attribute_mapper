@@ -1,12 +1,12 @@
 module AttributeMapper
-  
+
   def self.included(model)
     model.extend ClassMethods
     model.send(:include, InstanceMethods)
   end
-  
+
   module ClassMethods # @private
-    
+
     # Map a column in your table to a human-friendly attribute on your
     # model. When +attribute+ is accessed, it will return the key
     # from the mapping hash. When the attribute is updated, the value
@@ -51,7 +51,7 @@ module AttributeMapper
     end
 
     private
-    
+
     def add_accessor_for(attribute, mapping)
       class_eval(<<-EVAL, __FILE__, __LINE__)
         class << self
@@ -84,12 +84,12 @@ module AttributeMapper
         end
       EVAL
     end
-        
+
     def override(*args)
       override_getters *args
       override_setters *args
     end
-    
+
     def override_getters(attribute)
       class_eval(<<-EVAL, __FILE__, __LINE__)
         def #{attribute}
@@ -97,7 +97,7 @@ module AttributeMapper
         end
       EVAL
     end
-    
+
     def override_setters(attribute)
       class_eval(<<-EVAL, __FILE__, __LINE__)
         def #{attribute}=(raw_value)
@@ -106,15 +106,15 @@ module AttributeMapper
         end
       EVAL
     end
-    
+
     def verify_existence_of(attribute)
       raise ArgumentError, "`#{attribute}' is not an attribute of `#{self}'" unless column_names.include?(attribute.to_s)
     end
-    
+
   end
-  
+
   module InstanceMethods
-    
+
     private
 
     def resolve_value_of(attribute, raw_value)
@@ -126,5 +126,5 @@ module AttributeMapper
     end
 
   end
-  
+
 end
