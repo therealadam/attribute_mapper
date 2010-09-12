@@ -1,3 +1,7 @@
+= 1.3.1 (2010-09-12)
+
+* Add class-level options method (Michael Cuterl)
+
 = 1.3.0 (2010-03-09)
 
 The "Contributors-are-Awesome" release!
